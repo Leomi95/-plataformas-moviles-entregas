@@ -1,1 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container my-1 my-sm-2 my-md-4 my-lg-5">
+    <h1>Lista de Compras</h1>
+    <p class="lead">El objetivo es construir una lista de compras donde se puedan agregar productos.</p>
+
+   
+    <ol>
+        <div class="card">
+            <div class="card-body">
+                <h2>Listado de Productos</h2>
+                <ul id="lista-productos">
+                    <li></li>
+                </ul>
+
+                <hr class="hr">
+
+                <h2>Agregar Producto</h2>
+                
+                <form id="form-producto">
+                    <div class="input-group mb-3">
+                        
+                        <input type="text" class="form-control" aria-label="Nombre del Producto">
+                        <button class="btn btn-primary" type="submit">Agregar Producto</button>
+                        <button class="btn btn-primary" id="borrar-todos">Eliminar Todos</button>
+
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </ol>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    const productos = [];
+
+    function agregarProducto(nombreProducto) {
+        productos.push(nombreProducto);
+        actualizarListaProductos();
+        productos.sort();
+        document.querySelector('form').reset();
+    }
+
+    function eliminarProducto(index) {
+        productos.splice(index, 1);
+        actualizarListaProductos();
+    }
+
+    function actualizarListaProductos() {
+        const listaProductos = document.getElementById('lista-productos');
+        listaProductos.innerHTML = '';
+
+        for (let i = 0; i < productos.length; i++) {
+            const producto = productos[i];
+
+            const li = document.createElement('li');
+            li.textContent = producto;
+
+            const button = document.createElement('button');
+            button.textContent = 'Eliminar';
+            button.addEventListener('click', () => {
+                eliminarProducto(i);
+            });
+
+            li.appendChild(button);
+            listaProductos.appendChild(li);
+        }
+    }
+
+    function handlerFormulario(e) {
+        e.preventDefault();
+        const input = e.target.querySelector('input');
+        const nombreProducto = input.value.trim();
+        if (nombreProducto !== '') {
+            agregarProducto(nombreProducto);
+        }
+    }
+
+    document.querySelector('#borrar-todos').addEventListener('click', function() {
+        productos.length = 0;
+        actualizarListaProductos();
+    });
+
+    document.querySelector('#form-producto').addEventListener('submit', handlerFormulario);
+</script>
+</body>
+</html>
 
