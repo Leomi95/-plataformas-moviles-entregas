@@ -1,1 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editor de Texto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style type="text/css">
+        .bold {
+            font-weight: bold;
+        }
+        .italic {
+            font-style: italic;
+        }
+        .underline {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-1 my-sm-2 my-md-4 my-lg-5">
+    <h1>Editor de Texto</h1>
+    <p class="lead">El objetivo es construir un muy simple Editor de Texto donde se puedan aplicar distintos estilos a un texto.</p>
+    <h2 class="h3">Objetivos Adicionales</h2>
+    <ol>
+        <li>Agregar un nuevo botón con un estilo adicional (puede ser para aplicar un color al texto, por ejemplo).</li>
+        <li>Agregar la posibilidad de editar el texto, con un input para escribir un nuevo texto.</li>
+        <li>Mostrar el estado actual de cada estilo en el botón (si está activado o no). Puede ser cambiando el color o el texto del propio botón.</li>
+        <li>Agregar la funcionalidad de modificar el tamaño del texto.</li>
+    </ol>
+
+    <div class="card">
+        <div class="card-body">
+            <h2>Texto</h2>
+
+            <p class="texto" id="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum auctor libero, vel imperdiet est. Etiam blandit facilisis ex, nec cursus metus pharetra quis. Fusce imperdiet nisl nibh, ac aliquet ante elementum vitae.</p>
+
+            <hr class="hr">
+
+            <h2>Opciones de Formato</h2>
+            <div class="row">
+                <div class="col-12 col-md-4 my-1">
+                    <button id="btn-negrita" class="btn d-block w-100 btn-primary" data-funcion="negrita">
+                        Bold (Negrita)
+                    </button>
+                </div>
+                <div class="col-12 col-md-4 my-1">
+                    <button id="btn-cursiva" class="btn d-block w-100 btn-primary" data-funcion="cursiva">
+                        Italic (Cursiva)
+                    </button>
+                </div>
+                <div class="col-12 col-md-4 my-1">
+                    <button id="btn-subrayado" class="btn d-block w-100 btn-primary" data-funcion="subrayado">
+                        Underline (Subrayado)
+                    </button>
+                </div>
+                <div class="col-12 col-md-4 my-1">
+                    <button id="btn-color" class="btn d-block w-100 btn-primary" data-funcion="color">
+                        Color (Cambiar Color)
+                    </button>
+                </div>
+                <div class="col-12 col-md-4 my-1">
+                    <input type="text" id="input-text" class="form-control" placeholder="Nuevo Texto">
+                </div>
+                <div class="col-12 col-md-4 my-1">
+                    <button id="btn-editar" class="btn d-block w-100 btn-primary" data-funcion="editar">
+                        Editar Texto
+                    </button>
+                </div>
+                <div class="col-12 col-md-4 my-1">
+                    <input type="number" id="input-tamaño" class="form-control" placeholder="Tamaño de Texto">
+                </div>
+                <div class="col-12 col-md-4 my-1">
+                    <button id="btn-tamaño" class="btn d-block w-100 btn-primary" data-funcion="tamaño">
+                        Cambiar Tamaño
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    
+function funcionNegrita() {
+    const texto = document.getElementById('texto');
+    texto.classList.toggle('bold');
+    actualizarEstadoBoton('btn-negrita', texto.classList.contains('bold'));
+}
+
+
+function funcionCursiva() {
+    const texto = document.getElementById('texto');
+    texto.classList.toggle('italic');
+    actualizarEstadoBoton('btn-cursiva', texto.classList.contains('italic'));
+}
+
+
+function funcionSubrayado() {
+    const texto = document.getElementById('texto');
+    texto.classList.toggle('underline');
+    actualizarEstadoBoton('btn-subrayado', texto.classList.contains('underline'));
+}
+
+
+function funcionColor() {
+    const texto = document.getElementById('texto');
+    const color = prompt('Ingrese un color (ejemplo: red):');
+    if (color) {
+        texto.style.color = color;
+    }
+}
+
+
+function funcionEditar() {
+    const nuevoTexto = document.getElementById('input-text').value;
+    const texto = document.getElementById('texto');
+    texto.textContent = nuevoTexto;
+}
+
+
+function funcionTamaño() {
+    const nuevoTamaño = document.getElementById('input-tamaño').value + 'px';
+    const texto = document.getElementById('texto');
+    texto.style.fontSize = nuevoTamaño;
+}
+
+
+function actualizarEstadoBoton(idBoton, activado) {
+    const boton = document.getElementById(idBoton);
+    if (activado) {
+        boton.classList.add('btn-success');
+        boton.classList.remove('btn-primary');
+    } else {
+        boton.classList.remove('btn-success');
+        boton.classList.add('btn-primary');
+    }
+}
+
+document.getElementById('btn-negrita').addEventListener('click', funcionNegrita);
+document.getElementById('btn-cursiva').addEventListener('click', funcionCursiva);
+document.getElementById('btn-subrayado').addEventListener('click', funcionSubrayado);
+document.getElementById('btn-color').addEventListener('click', funcionColor);
+document.getElementById('btn-editar').addEventListener('click', funcionEditar);
+document.getElementById('btn-tamaño').addEventListener('click', funcionTamaño);
+
+</script>
+</body>
+</html>
 
