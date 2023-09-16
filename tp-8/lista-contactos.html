@@ -31,6 +31,11 @@
                     </select>
                 </div>
 
+                <div>
+                    <label for="solo-favoritos">Mostrar solo favoritos:</label>
+                    <input type="checkbox" id="solo-favoritos">
+                </div>
+
                 <ul id="lista-contactos"></ul>
 
                 <hr class="hr">
@@ -59,12 +64,12 @@
             },
         ];
 
-        function agregarContacto(nombre, apellido, telefono) {
+        function agregarContacto(nombre, apellido, telefono, favorito) {
             contactos.push({
                 nombre: nombre,
                 apellido: apellido,
                 telefono: telefono,
-                favorito: false
+                favorito: favorito
             });
             mostrarListado();
         }
@@ -72,6 +77,7 @@
         function mostrarListado() {
             const listaContactos = document.getElementById('lista-contactos');
             const ordenarPor = document.getElementById('ordenar-por').value;
+            const soloFavoritos = document.getElementById('solo-favoritos').checked;
 
             listaContactos.innerHTML = '';
 
@@ -85,15 +91,28 @@
             });
 
             contactos.forEach(contacto => {
+                if (soloFavoritos && !contacto.favorito) {
+                    return; // Saltar contactos no favoritos si se activa el filtro
+                }
+
                 const item = document.createElement('li');
                 item.textContent = `${contacto.nombre} ${contacto.apellido} - Teléfono: ${contacto.telefono}`;
 
-                if (contacto.favorito) {
-                    item.innerHTML += ' <span class="badge bg-warning">Favorito</span>';
-                }
+                const botonFavorito = document.createElement('button');
+                botonFavorito.textContent = contacto.favorito ? 'Quitar Favorito' : 'Marcar Favorito';
+                botonFavorito.addEventListener('click', () => {
+                    toggleFavorito(contacto);
+                });
+
+                item.appendChild(botonFavorito);
 
                 listaContactos.appendChild(item);
             });
+        }
+
+        function toggleFavorito(contacto) {
+            contacto.favorito = !contacto.favorito;
+            mostrarListado();
         }
 
         function handlerFormulario(e) {
@@ -110,12 +129,13 @@
             inputApellido.value = '';
             inputTelefono.value = '';
 
-            agregarContacto(nombre, apellido, telefono);
+            agregarContacto(nombre, apellido, telefono, false);
         }
 
         document.getElementById('form-contacto').addEventListener('submit', handlerFormulario);
-      
+
+        // Llama a mostrarListado() al cargar la página para mostrar los contactos iniciales
+        mostrarListado();
     </script>
 </body>
 </html>
-
